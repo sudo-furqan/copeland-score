@@ -4,12 +4,12 @@ A simple Streamlit based Copeland Score Calculator!
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://copeland-score.streamlit.app/)
 
+**Nama:** Furqan\
+**NIM:** 24/546979/PPA/06867
+
 # Copeland Score App
 
 Aplikasi ini digunakan untuk menghitung skor Copeland dalam pengambilan keputusan multi-kriteria dengan mempertimbangkan kriteria, bobot, dan perbandingan pasangan alternatif.
-
-**Nama:** Furqan\
-**NIM:** 24/546979/PPA/06867
 
 ## Fitur
 - Menentukan kriteria dan bobot dalam persen (%).
