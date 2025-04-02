@@ -1,8 +1,10 @@
 # 🎈 Copeland Score Calculator
 
 A simple Streamlit based Copeland Score Calculator!
+
 **Nama:** Furqan\
 **NIM:** 24/546979/PPA/06867
+
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://copeland-score.streamlit.app/)
 
 # Copeland Score App
