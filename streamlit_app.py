@@ -2,19 +2,19 @@ import streamlit as st
 import pandas as pd
 import itertools
 
-def calculate_copeland_score(comparisons, alternatives):
-    scores = {alt: 0 for alt in alternatives}
+def calculate_copeland_score(comparisons, scores):
+    results = {alt: scores.get(alt, 0) for alt in scores}
     
     for (alt1, alt2), result in comparisons.items():
         if result == alt1:
-            scores[alt1] += 1
-            scores[alt2] -= 1
+            results[alt1] += 1
+            results[alt2] -= 1
         elif result == alt2:
-            scores[alt2] += 1
-            scores[alt1] -= 1
+            results[alt2] += 1
+            results[alt1] -= 1
         # If draw, no change in scores
     
-    return scores
+    return results
 
 def main():
     st.title("Copeland Score Calculator")
@@ -27,6 +27,11 @@ def main():
         st.warning("Enter at least two alternatives.")
         return
     
+    st.subheader("Initial Scores")
+    scores = {}
+    for alt in alternatives:
+        scores[alt] = st.number_input(f"Initial score for {alt}", value=0, step=1, key=f"score_{alt}")
+    
     st.subheader("Pairwise Comparisons")
     comparisons = {}
     
@@ -35,8 +40,8 @@ def main():
         comparisons[(alt1, alt2)] = result
     
     if st.button("Calculate Copeland Score"):
-        scores = calculate_copeland_score(comparisons, alternatives)
-        df = pd.DataFrame(list(scores.items()), columns=["Alternative", "Score"])
+        final_scores = calculate_copeland_score(comparisons, scores)
+        df = pd.DataFrame(list(final_scores.items()), columns=["Alternative", "Score"])
         df = df.sort_values(by="Score", ascending=False)
         st.subheader("Results")
         st.dataframe(df)
