@@ -1,64 +1,83 @@
+Berikut versi lengkap `README.md` dalam **Bahasa Indonesia**, sudah disesuaikan dengan program yang kamu lampirkan dan format yang kamu minta:
+
+---
+
+```markdown
 # 🎈 Copeland Score Calculator
 
-**Nama:** Furqan\
+**Nama:** Furqan  
 **NIM:** 24/546979/PPA/06867
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://copeland-score.streamlit.app/)
 
-Aplikasi ini digunakan untuk menghitung skor Copeland dalam pengambilan keputusan multi-kriteria dengan mempertimbangkan kriteria, bobot, dan perbandingan pasangan alternatif.
+Aplikasi ini digunakan untuk menghitung skor **Copeland** dalam pengambilan keputusan multi-kriteria. Pengguna dapat memasukkan sejumlah kriteria dan bobotnya, kemudian memberikan penilaian pada tiap alternatif berdasarkan kriteria tersebut. Hasil akhirnya berupa peringkat alternatif berdasarkan metode perbandingan pasangan (pairwise) Copeland.
 
-## Fitur
-- Menentukan kriteria dan bobot dalam persen (%).
-- Menentukan alternatif yang akan dibandingkan.
-- Memasukkan nilai alternatif berdasarkan kriteria.
-- Menghitung skor Copeland secara otomatis.
-- Menampilkan hasil peringkat berdasarkan skor Copeland.
+---
 
-## Instalasi
+## ✨ Fitur
+
+- Menentukan daftar **kriteria** dan **bobot (%)**
+- Menambahkan **alternatif** yang akan dibandingkan
+- Memasukkan **nilai/skor** tiap alternatif pada setiap kriteria
+- Menghitung dan menampilkan **Skor Copeland** secara otomatis
+- Menampilkan hasil akhir dalam bentuk tabel peringkat
+
+---
+
+## 📦 Instalasi
 
 ### 1. Clone Repository
-```sh
+```bash
 git clone https://github.com/username/copeland-score-app.git
 ```
 
 ### 2. Masuk ke Direktori Aplikasi
-```sh
+```bash
 cd copeland-score-app
 ```
 
 ### 3. Install Dependensi
-Pastikan Anda memiliki Python dan pip terinstall, lalu jalankan perintah berikut:
-```sh
+Pastikan Python dan pip telah terpasang, lalu jalankan:
+```bash
 pip install -r requirements.txt
 ```
 
 ### 4. Jalankan Aplikasi
-Gunakan perintah berikut untuk menjalankan aplikasi dengan Streamlit:
-```sh
-streamlit run app.py
+```bash
+streamlit run streamlit_app.py
 ```
 
-## Cara Penggunaan
+> Ganti `streamlit_app.py` jika nama file berbeda.
+
+---
+
+## 🛠️ Cara Penggunaan
 
 1. **Masukkan Kriteria dan Bobotnya**
-   - Tuliskan kriteria yang digunakan untuk menilai alternatif, satu per baris.
-   - Tentukan bobot masing-masing kriteria dalam persen (%).
-   - Pastikan total bobot kriteria berjumlah 100%.
+   - Tulis kriteria (satu per baris).
+   - Tentukan bobot tiap kriteria (dalam persen).
+   - Total bobot harus = 100%.
 
 2. **Masukkan Alternatif**
-   - Tuliskan alternatif yang akan dibandingkan, satu per baris.
-   - Minimal harus ada dua alternatif.
+   - Tulis nama alternatif (satu per baris).
+   - Minimal 2 alternatif diperlukan.
 
-3. **Masukkan Nilai Alternatif**
-   - Berikan skor untuk setiap alternatif berdasarkan setiap kriteria.
-   - Skor berkisar dari 0 hingga 100.
+3. **Masukkan Skor Alternatif**
+   - Masukkan nilai (0–100) untuk setiap alternatif pada masing-masing kriteria.
 
 4. **Hitung Skor Copeland**
-   - Klik tombol "Hitung Skor Copeland" untuk memulai perhitungan.
-   - Hasil akan ditampilkan dalam bentuk tabel dengan peringkat alternatif berdasarkan skor Copeland.
+   - Klik tombol **"Calculate Copeland Score"**.
+   - Hasil akhir ditampilkan dalam bentuk tabel peringkat.
 
-## Contoh Penggunaan
-Jika memiliki 3 alternatif: **A, B, C** dan 3 kriteria: **Biaya, Kualitas, Daya Tahan** dengan bobot masing-masing **40%, 30%, 30%**, Anda dapat memasukkan nilai alternatif seperti berikut:
+---
+
+## 🧪 Contoh Penggunaan
+
+Misal:
+
+- **Kriteria:** Biaya, Kualitas, Daya Tahan  
+- **Bobot:** 40%, 30%, 30%
+- **Alternatif:** A, B, C
 
 | Alternatif | Biaya | Kualitas | Daya Tahan |
 |------------|-------|----------|------------|
@@ -66,13 +85,23 @@ Jika memiliki 3 alternatif: **A, B, C** dan 3 kriteria: **Biaya, Kualitas, Daya 
 | B          | 60    | 85       | 80         |
 | C          | 75    | 80       | 85         |
 
-Aplikasi akan secara otomatis melakukan pairwise contest dan menampilkan hasil peringkat alternatif berdasarkan metode Copeland.
-
-## Lisensi
-Aplikasi ini menggunakan lisensi MIT. Silakan gunakan dan modifikasi sesuai kebutuhan Anda.
-
-## Kontribusi
-Jika Anda ingin berkontribusi dalam proyek ini, silakan buat pull request atau ajukan issue.
+Aplikasi akan melakukan perbandingan semua pasangan alternatif dan menghitung skor Copeland untuk menentukan peringkat akhir.
 
 ---
-Dibuat dengan ❤️ menggunakan Streamlit.
+
+## 📄 Lisensi
+
+Aplikasi ini dilisensikan di bawah [MIT License](LICENSE). Bebas digunakan dan dimodifikasi.
+
+---
+
+## 🤝 Kontribusi
+
+Pull request dan issue sangat terbuka bagi siapa saja yang ingin berkontribusi dalam proyek ini.
+
+---
+
+Dibuat dengan ❤️ menggunakan [Streamlit](https://streamlit.io/)
+```
+
+---
