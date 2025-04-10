@@ -1,8 +1,3 @@
-Berikut versi lengkap `README.md` dalam **Bahasa Indonesia**, sudah disesuaikan dengan program yang kamu lampirkan dan format yang kamu minta:
-
----
-
-```markdown
 # 🎈 Copeland Score Calculator
 
 **Nama:** Furqan  
