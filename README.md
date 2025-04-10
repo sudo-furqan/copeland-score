@@ -98,5 +98,3 @@ Pull request dan issue sangat terbuka bagi siapa saja yang ingin berkontribusi d
 
 Dibuat dengan ❤️ menggunakan [Streamlit](https://streamlit.io/)
 ```
-
----
