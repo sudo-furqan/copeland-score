@@ -3,26 +3,19 @@ import pandas as pd
 import itertools
 
 def calculate_copeland_score(alternatives, weighted_scores):
-    scores = {alt: sum(weighted_scores[alt]) for alt in alternatives}
-    
-    comparisons = {}
+    copeland_scores = {alt: 0 for alt in alternatives}
+
     for alt1, alt2 in itertools.combinations(alternatives, 2):
-        if scores[alt1] > scores[alt2]:
-            comparisons[(alt1, alt2)] = alt1
-        elif scores[alt1] < scores[alt2]:
-            comparisons[(alt1, alt2)] = alt2
-        else:
-            comparisons[(alt1, alt2)] = "Draw"
-    
-    for (alt1, alt2), result in comparisons.items():
-        if result == alt1:
-            scores[alt1] += 1
-            scores[alt2] -= 1
-        elif result == alt2:
-            scores[alt2] += 1
-            scores[alt1] -= 1
-    
-    return scores
+        total1 = sum(weighted_scores[alt1])
+        total2 = sum(weighted_scores[alt2])
+
+        if total1 > total2:
+            copeland_scores[alt1] += 1
+        elif total1 < total2:
+            copeland_scores[alt2] += 1
+        # draw -> both get 0 (no score change)
+
+    return copeland_scores
 
 def main():
     st.title("Copeland Score Calculator with Criteria and Weights")
@@ -55,13 +48,13 @@ def main():
     weighted_scores = {alt: [] for alt in alternatives}
     for alt in alternatives:
         for criterion in criteria:
-            score = st.number_input(f"Score for {alt} on {criterion}", min_value=0, max_value=100, value=50, step=1)
+            score = st.number_input(f"Score for {alt} on {criterion}", min_value=0, max_value=100, value=50, step=1, key=f"{alt}_{criterion}")
             weighted_scores[alt].append(score * (weights[criterion] / 100))
     
     if st.button("Calculate Copeland Score"):
         final_scores = calculate_copeland_score(alternatives, weighted_scores)
-        df = pd.DataFrame(list(final_scores.items()), columns=["Alternative", "Score"])
-        df = df.sort_values(by="Score", ascending=False)
+        df = pd.DataFrame(list(final_scores.items()), columns=["Alternative", "Copeland Score"])
+        df = df.sort_values(by="Copeland Score", ascending=False)
         st.subheader("Results")
         st.dataframe(df)
 
