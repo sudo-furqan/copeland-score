@@ -24,74 +24,104 @@ def calculate_copeland_score(total_scores):
         elif total_scores[alt1] < total_scores[alt2]:
             copeland_scores[alt2] += 1
             copeland_scores[alt1] -= 1
-        # draw = no score change
-
+        # draw = no change
     return copeland_scores
 
 def main():
-    st.title("Copeland Score Calculator with Details")
-    
-    # Input criteria and weights
-    st.subheader("1. Kriteria dan Bobot (%)")
-    criteria_input = st.text_area("Masukkan kriteria (satu per baris)", "Harga\nKualitas\nDaya Tahan\nLayanan")
-    criteria = [c.strip() for c in criteria_input.split("\n") if c.strip()]
-    
-    weights = {}
-    for criterion in criteria:
-        weights[criterion] = st.number_input(f"Bobot untuk {criterion} (%)", min_value=0, max_value=100, value=25, step=1)
-    
-    total_weight = sum(weights.values())
-    if total_weight != 100:
-        st.warning("Total bobot harus 100%.")
+    st.set_page_config(page_title="Copeland Score Calculator", layout="wide")
+    st.title("🔢 Copeland Score Calculator")
+
+    # Step 1: Kriteria dan Bobot - dengan data editor
+    st.header("1. Kriteria dan Bobot")
+    st.markdown("Edit nama kriteria dan bobotnya (total bobot harus 100%)")
+
+    default_data = pd.DataFrame({
+        "Kriteria": ["Harga", "Kualitas", "Daya Tahan", "Layanan"],
+        "Bobot (%)": [25, 25, 25, 25]
+    })
+
+    criteria_df = st.data_editor(
+        default_data,
+        num_rows="dynamic",
+        use_container_width=True,
+        key="kriteria_bobot"
+    )
+
+    # Validasi
+    if criteria_df.empty or "Kriteria" not in criteria_df.columns or "Bobot (%)" not in criteria_df.columns:
+        st.error("Harap masukkan minimal satu kriteria dengan bobot.")
         return
-    
-    # Input alternatives
-    st.subheader("2. Alternatif")
-    alternatives = st.text_area("Masukkan nama alternatif (satu per baris)", "Vendor A\nVendor B\nVendor C").split("\n")
+
+    criteria_df.dropna(inplace=True)
+    criteria_df["Kriteria"] = criteria_df["Kriteria"].astype(str).str.strip()
+    criteria_df["Bobot (%)"] = pd.to_numeric(criteria_df["Bobot (%)"], errors="coerce").fillna(0).astype(int)
+
+    criteria = criteria_df["Kriteria"].tolist()
+    weights = dict(zip(criteria_df["Kriteria"], criteria_df["Bobot (%)"]))
+    total_weight = sum(weights.values())
+
+    st.progress(min(total_weight, 100) / 100.0)
+    if total_weight != 100:
+        st.warning("⚠️ Total bobot saat ini adalah {}%. Harus tepat 100%.".format(total_weight))
+        return
+
+    # Step 2: Alternatif
+    st.header("2. Alternatif")
+    alternatives = st.text_area("Masukkan nama alternatif (satu per baris):", "Vendor A\nVendor B\nVendor C").split("\n")
     alternatives = [alt.strip() for alt in alternatives if alt.strip()]
     
     if len(alternatives) < 2:
-        st.warning("Masukkan minimal dua alternatif.")
+        st.error("Masukkan minimal dua alternatif.")
         return
-    
-    # Input scores
-    st.subheader("3. Nilai Alternatif terhadap Kriteria")
+
+    # Step 3: Nilai
+    st.header("3. Nilai Alternatif terhadap Kriteria")
     weighted_scores = {alt: [] for alt in alternatives}
     raw_scores = {alt: {} for alt in alternatives}
 
     for alt in alternatives:
-        for criterion in criteria:
-            score = st.number_input(
-                f"Nilai {alt} pada {criterion}", min_value=0, max_value=100, value=70, step=1, key=f"{alt}_{criterion}"
-            )
-            weighted = score * (weights[criterion] / 100)
-            weighted_scores[alt].append(weighted)
-            raw_scores[alt][criterion] = score
+        with st.expander(f"Nilai untuk {alt}", expanded=True):
+            for criterion in criteria:
+                score = st.number_input(
+                    f"{criterion} - {alt}",
+                    min_value=0, max_value=100, value=70, step=1,
+                    key=f"{alt}_{criterion}"
+                )
+                weighted = score * (weights[criterion] / 100)
+                weighted_scores[alt].append(weighted)
+                raw_scores[alt][criterion] = score
 
-    if st.button("Hitung Skor Copeland"):
+    # Step 4: Hitung
+    if st.button("📊 Hitung Skor Copeland"):
+        st.header("📈 Hasil Perhitungan")
+
         total_scores, details = calculate_weighted_totals(alternatives, weighted_scores)
         copeland_scores = calculate_copeland_score(total_scores)
 
-        # Tampilkan perhitungan
-        st.markdown("**Hasil:**")
-        st.code("Perhitungan:")
+        # Rincian perhitungan
+        st.subheader("🔍 Rincian Skor Total")
         for alt in alternatives:
-            formula_parts = [f"{raw_scores[alt][c]}×{weights[c]/100:.1f}" for c in criteria]
-            formula = "(" + ") + (".join(formula_parts) + ")"
-            st.code(f"- {alt}: {formula} = {total_scores[alt]:.0f}")
+            formula_parts = [f"{raw_scores[alt][c]}×{weights[c]/100:.2f}" for c in criteria]
+            formula = " + ".join(formula_parts)
+            st.write(f"**{alt}** = {formula} = **{total_scores[alt]:.2f}**")
 
-        # Buat DataFrame hasil
+        # Hasil akhir
         result_df = pd.DataFrame({
-            "Vendor": alternatives,
-            "Skor": [copeland_scores[alt] for alt in alternatives]
-        }).sort_values(by="Skor", ascending=False).reset_index(drop=True)
+            "Alternatif": alternatives,
+            "Total Skor": [total_scores[alt] for alt in alternatives],
+            "Skor Copeland": [copeland_scores[alt] for alt in alternatives]
+        }).sort_values(by="Skor Copeland", ascending=False).reset_index(drop=True)
 
-        # Tambahkan peringkat dengan emoji
-        medals = ["🥇 Pertama", "🥈 Kedua", "🥉 Ketiga"]
+        # Peringkat + Medali
+        medals = ["🥇", "🥈", "🥉"]
         result_df["Peringkat"] = [medals[i] if i < len(medals) else f"Ke-{i+1}" for i in range(len(result_df))]
 
-        st.markdown("**Skor Copeland:**")
-        st.dataframe(result_df)
+        st.subheader("🏆 Hasil Akhir")
+        st.dataframe(result_df, use_container_width=True)
+
+        # Pemenang
+        winner = result_df.iloc[0]
+        st.success(f"✅ **{winner['Alternatif']}** adalah yang terbaik berdasarkan Copeland Score ({winner['Skor Copeland']})!")
 
 if __name__ == "__main__":
     main()
