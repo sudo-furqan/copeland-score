@@ -2,8 +2,7 @@
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://copeland-score.streamlit.app/)
 
-**Author:** Furqan  
-**NIM:** 24/546979/PPA/06867
+**Author:** Furqan - 24/546979/PPA/06867 | Marta Zuriadi - 24/548101/PPA/06919 
 
 Selamat datang di **Copeland Score Calculator** – sebuah aplikasi berbasis Streamlit yang dirancang untuk membantu pengambilan keputusan multi-kriteria menggunakan metode **pairwise Copeland**.
 
